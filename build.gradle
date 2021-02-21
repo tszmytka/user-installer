@@ -1,0 +1,26 @@
+plugins {
+    id 'idea'
+    id 'application'
+}
+
+tasks.withType(JavaCompile).each {
+    it.options.compilerArgs.addAll('--enable-preview', '-Xlint:preview')
+}
+
+ext {
+    group = 'dev.tomek'
+    sourceCompatibility = 15
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'info.picocli:picocli:4.6.1'
+}
+
+application {
+    mainClass = 'dev.tomek.userinstaller.UserInstaller'
+}
