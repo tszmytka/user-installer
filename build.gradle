@@ -10,6 +10,7 @@ tasks.withType(JavaCompile).each {
 ext {
     group = 'dev.tomek'
     sourceCompatibility = 15
+    lombokVersion = '1.18.18'
 }
 
 repositories {
@@ -19,6 +20,8 @@ repositories {
 
 dependencies {
     implementation 'info.picocli:picocli:4.6.1'
+    compileOnly "org.projectlombok:lombok:$lombokVersion"
+    annotationProcessor "org.projectlombok:lombok:$lombokVersion"
 }
 
 application {
