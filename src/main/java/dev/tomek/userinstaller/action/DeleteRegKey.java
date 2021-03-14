@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -20,8 +21,7 @@ public class DeleteRegKey implements Action {
     public boolean perform() {
         try {
             final Process process = Runtime.getRuntime().exec("reg delete " + key);
-            process.waitFor();
-
+            process.waitFor(30, TimeUnit.SECONDS);
         } catch (IOException | InterruptedException e) {
             LOGGER.error("Problem while deleting registry key ", e);
         }
