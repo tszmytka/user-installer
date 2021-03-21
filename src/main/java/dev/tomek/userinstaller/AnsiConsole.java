@@ -8,11 +8,11 @@ public class AnsiConsole {
     private static final String OFF = sgr(0);
 
     public static void printOk() {
-        System.out.printf("%sOK%s", sgr(32), OFF);
+        System.out.printf("%sOK%s\n", sgr(32), OFF);
     }
 
     public static void printError() {
-        System.out.printf("%sERROR%s", sgr(31), OFF);
+        System.out.printf("%sERROR%s\n", sgr(31), OFF);
     }
 
     private static String sgr(int... sgrParam) {
