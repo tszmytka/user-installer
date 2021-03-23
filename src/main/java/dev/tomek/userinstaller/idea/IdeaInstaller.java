@@ -64,8 +64,8 @@ public class IdeaInstaller implements Runnable {
             new DeleteDir(jb2),
             new DeleteRegKey("HKEY_CURRENT_USER\\Software\\JavaSoft\\Prefs\\jetbrains"),
             new CopyOptions(
-                oldInstallation.resolve("idea64.exe.vmoptions"),
-                newInstallation.resolve("idea64.exe.vmoptions"),
+                oldInstallation.resolve(Paths.get("bin", "idea64.exe.vmoptions")),
+                newInstallation.resolve(Paths.get("bin", "idea64.exe.vmoptions")),
                 List.of("user.home", "idea.config.path", "idea.system.path", "idea.plugins.path", "idea.log.path")
             )
         );
