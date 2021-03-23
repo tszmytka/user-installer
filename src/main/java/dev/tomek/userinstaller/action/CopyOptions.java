@@ -32,7 +32,12 @@ public class CopyOptions implements Action {
         try {
             final List<String> targetAlreadyContaining = Files.lines(to, UTF_8).filter(l -> optionNames.stream().anyMatch(l::contains)).collect(toList());
             if (!targetAlreadyContaining.isEmpty()) {
-                throw new IllegalStateException("Target file already contains option names: " + targetAlreadyContaining);
+                if (targetAlreadyContaining.size() == optionNames.size()) {
+                    LOGGER.info("All options are already in the target file");
+                    return true;
+                } else {
+                    throw new IllegalStateException("Some (but not all) options are already in the target file: " + targetAlreadyContaining);
+                }
             }
             try (BufferedWriter target = Files.newBufferedWriter(to, UTF_8, StandardOpenOption.APPEND)) {
                 target.newLine();

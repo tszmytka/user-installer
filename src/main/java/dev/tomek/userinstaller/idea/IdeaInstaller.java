@@ -62,7 +62,7 @@ public class IdeaInstaller implements Runnable {
             new DeleteDir(homeDir.resolve(Paths.get("idea"))),
             new DeleteDir(jb1),
             new DeleteDir(jb2),
-            new DeleteRegKey("HKEY_CURRENT_USER\\Software\\JavaSoft\\Prefs\\jetbrains"),
+            new DeleteRegKey("HKCU\\Software\\JavaSoft\\Prefs\\jetbrains"),
             new CopyOptions(
                 oldInstallation.resolve(Paths.get("bin", "idea64.exe.vmoptions")),
                 newInstallation.resolve(Paths.get("bin", "idea64.exe.vmoptions")),
@@ -73,6 +73,8 @@ public class IdeaInstaller implements Runnable {
             System.out.print(a.getName() + " ... ");
             if (a.perform()) {
                 AnsiConsole.printOk();
+            } else {
+                AnsiConsole.printError();
             }
         });
         System.out.println("Installation successful.");

@@ -20,8 +20,11 @@ public class DeleteRegKey implements Action {
     @Override
     public boolean perform() {
         try {
-            final Process process = Runtime.getRuntime().exec("reg delete " + key);
-            process.waitFor(30, TimeUnit.SECONDS);
+            final Process process = Runtime.getRuntime().exec("reg delete %s /f".formatted(key));
+            final boolean result = process.waitFor(1, TimeUnit.SECONDS);
+            LOGGER.debug("Registry key {} deletion result: {}", key, result);
+            process.destroy();
+            return result;
         } catch (IOException | InterruptedException e) {
             LOGGER.error("Problem while deleting registry key ", e);
         }
