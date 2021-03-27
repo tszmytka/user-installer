@@ -1,7 +1,14 @@
 package dev.tomek.userinstaller.action;
 
 public interface Action {
+
     String getName();
 
-    boolean perform();
+    Result perform();
+
+    enum Result {
+        OK,
+        ERROR,
+        SKIPPED;
+    }
 }

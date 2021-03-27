@@ -23,7 +23,7 @@ public class DeleteDir implements Action {
     }
 
     @Override
-    public boolean perform() {
+    public Result perform() {
         try {
             if (Files.exists(dir)) {
                 final boolean dosAttrsSupported = Files.getFileStore(dir).supportsFileAttributeView(DosFileAttributeView.class);
@@ -45,11 +45,11 @@ public class DeleteDir implements Action {
             } else {
                 LOGGER.info("Directory for deletion doesn't exist: {}", dir);
             }
-            return true;
+            return Result.OK;
         } catch (IOException e) {
             LOGGER.error("Cannot delete directory: {}", dir, e);
         }
-        return false;
+        return Result.ERROR;
     }
 
     private void ensureWritability(Path path, boolean dosAttrsSupported) throws IOException {

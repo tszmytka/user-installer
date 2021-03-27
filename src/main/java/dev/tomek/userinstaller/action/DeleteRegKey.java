@@ -19,18 +19,20 @@ public class DeleteRegKey implements Action {
     }
 
     @Override
-    public boolean perform() {
+    public Result perform() {
         Process process = null;
         try {
             process = Runtime.getRuntime().exec("reg delete %s /f".formatted(key));
             final boolean result = process.waitFor(1, TimeUnit.SECONDS);
             LOGGER.debug("Registry key {} deletion result: {}", key, result);
-            return result;
+            if (result) {
+                return Result.OK;
+            }
         } catch (IOException | InterruptedException e) {
             LOGGER.error("Problem while deleting registry key {}", key, e);
         } finally {
             Optional.ofNullable(process).ifPresent(Process::destroy);
         }
-        return false;
+        return Result.ERROR;
     }
 }

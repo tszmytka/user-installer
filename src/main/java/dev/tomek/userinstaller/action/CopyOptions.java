@@ -28,13 +28,13 @@ public class CopyOptions implements Action {
     }
 
     @Override
-    public boolean perform() {
+    public Result perform() {
         try {
             final List<String> targetAlreadyContaining = Files.lines(to, UTF_8).filter(l -> optionNames.stream().anyMatch(l::contains)).collect(toList());
             if (!targetAlreadyContaining.isEmpty()) {
                 if (targetAlreadyContaining.size() == optionNames.size()) {
                     LOGGER.info("All options are already in the target file");
-                    return true;
+                    return Result.SKIPPED;
                 } else {
                     throw new IllegalStateException("Some (but not all) options are already in the target file: " + targetAlreadyContaining);
                 }
@@ -44,10 +44,10 @@ public class CopyOptions implements Action {
                 target.write(Files.lines(from, UTF_8).filter(l -> optionNames.stream().anyMatch(l::contains)).collect(joining("\n")));
                 target.newLine();
             }
-            return true;
+            return Result.OK;
         } catch (IOException e) {
             LOGGER.error("Cannot copy options", e);
         }
-        return false;
+        return Result.ERROR;
     }
 }

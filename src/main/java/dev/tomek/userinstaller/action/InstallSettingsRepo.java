@@ -22,22 +22,28 @@ public class InstallSettingsRepo implements Action {
     }
 
     @Override
-    public boolean perform() {
+    public Result perform() {
         final Path destination = homeDir.resolve(Paths.get("idea", "config", "settingsRepository", "repository"));
         Process process = null;
         try {
             Files.createDirectories(destination);
+            if (!Files.isDirectory(destination)) {
+                LOGGER.error("Destination is not a directory");
+                return Result.ERROR;
+            }
+            if (Files.walk(destination).findAny().isPresent()) {
+                LOGGER.info("Skipping installing settings repository. Destination directory is not empty.");
+                return Result.SKIPPED;
+            }
             process = Runtime.getRuntime().exec("git clone %s %s".formatted(repoUrl, destination));
-            final CopyFiles copyConfig = new CopyFiles(
-                homeDir.resolve(Paths.get("idea", "config", "settingsRepository", "repository", "external", "settingsRepository", "config.json")),
-                homeDir.resolve(Paths.get("idea", "config", "settingsRepository", "config.json"))
-            );
-            return process.waitFor(1, TimeUnit.MINUTES) && copyConfig.perform();
+            if (process.waitFor(1, TimeUnit.MINUTES)) {
+                return Result.OK;
+            }
         } catch (IOException | InterruptedException e) {
             LOGGER.error("Cannot install settings repository into {}", destination, e);
         } finally {
             Optional.ofNullable(process).ifPresent(Process::destroy);
         }
-        return false;
+        return Result.ERROR;
     }
 }

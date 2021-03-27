@@ -68,17 +68,17 @@ public class IdeaInstaller implements Runnable {
                 newInstallation.resolve(Paths.get("bin", "idea64.exe.vmoptions")),
                 List.of("user.home", "idea.config.path", "idea.system.path", "idea.plugins.path", "idea.log.path")
             ),
-            new InstallSettingsRepo(homeDir, settingsRepoUrl)
+
+            new InstallSettingsRepo(homeDir, settingsRepoUrl),
+            new CopyFiles(
+                homeDir.resolve(Paths.get("idea", "config", "settingsRepository", "repository", "external", "templates")), homeDir.resolve(Paths.get("idea"))
+            )
         );
         actions.forEach(a -> {
             System.out.print(a.getName() + " ... ");
-            if (a.perform()) {
-                AnsiConsole.printOk();
-            } else {
-                AnsiConsole.printError();
-            }
+            AnsiConsole.printResult(a.perform());
         });
-        System.out.println("Installation successful.");
+        System.out.println("Installation finished.");
         System.out.println("Elapsed time: " + LocalTime.ofNanoOfDay(System.nanoTime() - t0));
     }
 
