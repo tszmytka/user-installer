@@ -1,10 +1,7 @@
 package dev.tomek.userinstaller.idea;
 
 import dev.tomek.userinstaller.AnsiConsole;
-import dev.tomek.userinstaller.action.Action;
-import dev.tomek.userinstaller.action.CopyOptions;
-import dev.tomek.userinstaller.action.DeleteDir;
-import dev.tomek.userinstaller.action.DeleteRegKey;
+import dev.tomek.userinstaller.action.*;
 import lombok.extern.slf4j.Slf4j;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
@@ -27,14 +24,17 @@ import static java.util.stream.Collectors.toList;
 @Slf4j
 @Command(mixinStandardHelpOptions = true)
 public class IdeaInstaller implements Runnable {
-    @CommandLine.Option(names = {"-d", "--home-dir"}, description = "User home directory", required = true)
+    @CommandLine.Option(names = {"-d", "--home-dir"}, description = "User home directory - where idea's config dir will be located.", required = true)
     private String userHome;
 
-    @CommandLine.Option(names = {"-u", "--user"}, description = "User name", required = true)
+    @CommandLine.Option(names = {"-u", "--user"}, description = "User name. Used to locate additional settings needing cleaning up.", required = true)
     private String userName;
 
-    @CommandLine.Option(names = {"-a", "--apps-dir"}, description = "Applications directory", required = true)
+    @CommandLine.Option(names = {"-a", "--apps-dir"}, description = "Applications directory. Where the old and new Intellij installs reside.", required = true)
     private String appsDir;
+
+    @CommandLine.Option(names = {"-s", "--settings-repo"}, description = "Url to settings repository. This will be cloned and installed.", required = true)
+    private String settingsRepoUrl;
 
     public static void main(String[] args) {
         System.exit(new CommandLine(new IdeaInstaller()).execute(args));
@@ -67,7 +67,8 @@ public class IdeaInstaller implements Runnable {
                 oldInstallation.resolve(Paths.get("bin", "idea64.exe.vmoptions")),
                 newInstallation.resolve(Paths.get("bin", "idea64.exe.vmoptions")),
                 List.of("user.home", "idea.config.path", "idea.system.path", "idea.plugins.path", "idea.log.path")
-            )
+            ),
+            new InstallSettingsRepo(homeDir, settingsRepoUrl)
         );
         actions.forEach(a -> {
             System.out.print(a.getName() + " ... ");
