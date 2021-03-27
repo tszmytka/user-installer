@@ -31,7 +31,7 @@ public class InstallSettingsRepo implements Action {
                 LOGGER.error("Destination is not a directory");
                 return Result.ERROR;
             }
-            if (Files.walk(destination).findAny().isPresent()) {
+            if (Files.walk(destination).anyMatch(path -> path != destination)) {
                 LOGGER.info("Skipping installing settings repository. Destination directory is not empty.");
                 return Result.SKIPPED;
             }

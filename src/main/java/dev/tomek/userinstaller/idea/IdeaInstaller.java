@@ -36,6 +36,15 @@ public class IdeaInstaller implements Runnable {
     @CommandLine.Option(names = {"-s", "--settings-repo"}, description = "Url to settings repository. This will be cloned and installed.", required = true)
     private String settingsRepoUrl;
 
+    @CommandLine.Option(names = {"-m", "--maven-home"}, description = "Maven home directory.", required = true)
+    private String mavenHome;
+
+    @CommandLine.Option(names = {"-j8", "--jdk8-home"}, description = "JDK 8 home directory.", required = true)
+    private String jdk8Home;
+
+    @CommandLine.Option(names = {"-j15", "--jdk15-home"}, description = "JDK 15 home directory.", required = true)
+    private String jdk15Home;
+
     public static void main(String[] args) {
         System.exit(new CommandLine(new IdeaInstaller()).execute(args));
     }
@@ -56,6 +65,7 @@ public class IdeaInstaller implements Runnable {
         final Path newInstallation = installDirs.get(1);
         System.out.println("Old Intellij installation: " + oldInstallation);
         System.out.println("New Intellij installation: " + newInstallation);
+        System.out.println("User home dir: " + homeDir);
         confirmInstallation();
 
         final List<Action> actions = List.of(
@@ -72,7 +82,15 @@ public class IdeaInstaller implements Runnable {
             new InstallSettingsRepo(homeDir, settingsRepoUrl),
             new CopyFiles(
                 homeDir.resolve(Paths.get("idea", "config", "settingsRepository", "repository", "external", "templates")), homeDir.resolve(Paths.get("idea"))
-            )
+            ),
+            new ResolveVars(homeDir.resolve(Paths.get("idea", "config", "options")), Map.of(
+                "$GRADLE_CACHES", homeDir.resolve(Paths.get(".gradle", "caches")).toString(),
+                "$KOTLIN_BUNDLED", newInstallation.resolve(Paths.get("plugins", "Kotlin", "kotlinc")).toString(),
+                "$MAVEN_REPOSITORY", homeDir.resolve(Paths.get(".m2", "repository")).toString(),
+                "$mavenHome", mavenHome,
+                "$homePathJdk8", jdk8Home,
+                "$homePathJdk15", jdk15Home
+            ))
         );
         actions.forEach(a -> {
             System.out.print(a.getName() + " ... ");
