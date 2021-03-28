@@ -7,6 +7,7 @@ stages:
   - build
   - test
   - check
+  - deploy
 
 before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
@@ -30,3 +31,8 @@ Check:
   stage: check
   script:
     - './gradlew --build-cache check'
+
+Deploy:
+  stage: deploy
+  script:
+    - './gradlew --build-cache publish'

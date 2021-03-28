@@ -1,6 +1,7 @@
 plugins {
     id 'idea'
     id 'application'
+    id 'maven-publish'
 }
 
 ext {
@@ -41,4 +42,18 @@ jar {
 
 test {
     useJUnitPlatform()
+}
+
+repositories {
+    maven {
+        url "https://gitlab.example.com/api/v4/projects/24570105/packages/maven"
+        name "GitLab"
+        credentials(HttpHeaderCredentials) {
+            name = 'Deploy-Token'
+            value = '<deploy-token>'
+        }
+        authentication {
+            header(HttpHeaderAuthentication)
+        }
+    }
 }
