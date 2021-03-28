@@ -4,8 +4,9 @@ plugins {
     id 'maven-publish'
 }
 
+group = 'dev.tomek'
+
 ext {
-    group = 'dev.tomek'
     sourceCompatibility = 15
     lombokVersion = '1.18.18'
     mainClassName = 'dev.tomek.userinstaller.idea.IdeaInstaller'
