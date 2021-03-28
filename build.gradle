@@ -11,6 +11,7 @@ ext {
     group = 'dev.tomek'
     sourceCompatibility = 15
     lombokVersion = '1.18.18'
+    mainClassName = 'dev.tomek.userinstaller.idea.IdeaInstaller'
 }
 
 repositories {
@@ -26,5 +27,15 @@ dependencies {
 }
 
 application {
-    mainClass = 'dev.tomek.userinstaller.idea.IdeaInstaller'
+    mainClass = project.mainClassName
+    applicationDefaultJvmArgs = ['--enable-preview']
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': project.mainClassName
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
