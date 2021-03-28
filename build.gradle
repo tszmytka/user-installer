@@ -44,16 +44,25 @@ test {
     useJUnitPlatform()
 }
 
-repositories {
-    maven {
-        url "https://gitlab.example.com/api/v4/projects/24570105/packages/maven"
-        name "GitLab"
-        credentials(HttpHeaderCredentials) {
-            name = 'Deploy-Token'
-            value = '<deploy-token>'
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
         }
-        authentication {
-            header(HttpHeaderAuthentication)
+    }
+
+    repositories {
+        maven {
+            url "https://gitlab.example.com/api/v4/projects/24570105/packages/maven"
+            name "GitLab"
+            credentials(HttpHeaderCredentials) {
+                name = 'Deploy-Token'
+                value = '<deploy-token>'
+            }
+            authentication {
+                header(HttpHeaderAuthentication)
+            }
         }
     }
 }
+
