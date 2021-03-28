@@ -58,7 +58,7 @@ publishing {
             name "GitLab"
             credentials(HttpHeaderCredentials) {
                 name = 'Deploy-Token'
-                value = '<deploy-token>'
+                value = 'NqqBLQ225viSUndtM87Q'
             }
             authentication {
                 header(HttpHeaderAuthentication)
