@@ -9,6 +9,7 @@ group = 'dev.tomek'
 ext {
     sourceCompatibility = 15
     lombokVersion = '1.18.18'
+    jacksonVersion = '2.12.2'
     mainClassName = 'dev.tomek.userinstaller.idea.IdeaInstaller'
 }
 
@@ -22,6 +23,7 @@ dependencies {
     implementation "ch.qos.logback:logback-classic:1.2.3"
     compileOnly "org.projectlombok:lombok:$lombokVersion"
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+    implementation "com.fasterxml.jackson.core:jackson-core:$jacksonVersion"
 
     testImplementation platform('org.junit:junit-bom:5.7.1')
     testImplementation 'org.junit.jupiter:junit-jupiter'
