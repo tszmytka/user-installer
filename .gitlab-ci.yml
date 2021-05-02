@@ -42,6 +42,10 @@ Deploy:
   stage: deploy
   except:
     - tags
-  # todo setup gitlab runner to be able to push tags https://devops.stackexchange.com/questions/11952/gitlab-make-commit-in-shared-ci-runner-and-push-to-repository-open-merge-requ
+  before_script:
+    - url_host=`git remote get-url origin | sed -e "s/https:\/\/gitlab-ci-token:.*@//g"`
   script:
-    - './gradlew --build-cache publish'
+    - 'git remote set-url origin "https://$GIT_ACCESS_USER:$GIT_ACCESS_PASSWORD@${url_host}"'
+    - 'git config user.name $GIT_ACCESS_USER'
+    - 'git config user.email $GIT_ACCESS_EMAIL'
+    - './gradlew --build-cache publish final -Prelease.scope=patch'
