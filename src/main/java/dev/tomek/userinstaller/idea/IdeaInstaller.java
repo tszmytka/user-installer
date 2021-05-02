@@ -21,6 +21,7 @@ import java.util.Map;
 
 import static java.util.stream.Collectors.toList;
 
+@SuppressWarnings("unused")
 @Slf4j
 @Command(mixinStandardHelpOptions = true)
 public class IdeaInstaller implements Runnable {
@@ -39,11 +40,11 @@ public class IdeaInstaller implements Runnable {
     @CommandLine.Option(names = {"-m", "--maven-home"}, description = "Maven home directory.", required = true)
     private String mavenHome;
 
+    @CommandLine.Option(names = {"-j", "--jdk-home"}, description = "Main JDK home directory.", required = true)
+    private String jdkHome;
+
     @CommandLine.Option(names = {"-j8", "--jdk8-home"}, description = "JDK 8 home directory.", required = true)
     private String jdk8Home;
-
-    @CommandLine.Option(names = {"-j15", "--jdk15-home"}, description = "JDK 15 home directory.", required = true)
-    private String jdk15Home;
 
     public static void main(String[] args) {
         System.exit(new CommandLine(new IdeaInstaller()).execute(args));
@@ -89,7 +90,7 @@ public class IdeaInstaller implements Runnable {
                 "$MAVEN_REPOSITORY", homeDir.resolve(Paths.get(".m2", "repository")).toString(),
                 "$mavenHome", mavenHome,
                 "$homePathJdk8", jdk8Home,
-                "$homePathJdk15", jdk15Home
+                "$homePathJdk15", jdkHome
             ))
         );
         actions.forEach(a -> {
