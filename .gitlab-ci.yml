@@ -34,5 +34,6 @@ Check:
 
 Deploy:
   stage: deploy
+  # todo setup gitlab runner to be able to push tags https://devops.stackexchange.com/questions/11952/gitlab-make-commit-in-shared-ci-runner-and-push-to-repository-open-merge-requ
   script:
-    - './gradlew --build-cache publish final -Prelease.scope=patch'
+    - './gradlew --build-cache publish'
