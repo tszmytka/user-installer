@@ -41,7 +41,8 @@ public abstract class IntellijInstaller implements Runnable {
     @CommandLine.Option(names = {"-s", "--settings-repo"}, description = "Url to settings repository. This will be cloned and installed.", required = true)
     private String settingsRepoUrl;
 
-    protected abstract List<Action> getCustomActions();
+    protected abstract List<Action> buildCustomActions(Path homeDir, Path newInstallation);
+
 
     @Override
     public void run() {
@@ -69,7 +70,7 @@ public abstract class IntellijInstaller implements Runnable {
                 new InstallSettingsRepo(homeDir, applicationName, settingsRepoUrl),
                 new SetVmOptions(homeDir, applicationName, newInstallation.resolve(Paths.get("bin", applicationName + "64.exe.vmoptions")))
             ),
-            getCustomActions().stream()
+            buildCustomActions(homeDir, newInstallation).stream()
         );
         actions.forEach(a -> {
             System.out.print(a.getName() + " ... ");

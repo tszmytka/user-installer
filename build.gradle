@@ -10,7 +10,9 @@ group = 'dev.tomek'
 ext {
     sourceCompatibility = 15
     lombokVersion = '1.18.18'
-    mainClassName = 'dev.tomek.userinstaller.idea.IdeaInstaller'
+    mainClassName = 'dev.tomek.userinstaller.intellij.idea.IdeaInstaller'
+    // for phpstorm
+//    mainClassName = 'dev.tomek.userinstaller.intellij.phpstorm.PhpStormInstaller'
 }
 
 repositories {
