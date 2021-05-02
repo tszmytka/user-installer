@@ -19,21 +19,29 @@ cache:
 
 Compile:
   stage: build
+  except:
+    - tags
   script:
     - './gradlew --build-cache classes'
 
 Test:
   stage: test
+  except:
+    - tags
   script:
     - './gradlew test'
 
 Check:
   stage: check
+  except:
+    - tags
   script:
     - './gradlew --build-cache check'
 
 Deploy:
   stage: deploy
+  except:
+    - tags
   # todo setup gitlab runner to be able to push tags https://devops.stackexchange.com/questions/11952/gitlab-make-commit-in-shared-ci-runner-and-push-to-repository-open-merge-requ
   script:
     - './gradlew --build-cache publish'
