@@ -1,10 +1,7 @@
 package dev.tomek.userinstaller.intellij;
 
 import dev.tomek.userinstaller.AnsiConsole;
-import dev.tomek.userinstaller.action.Action;
-import dev.tomek.userinstaller.action.DeleteDir;
-import dev.tomek.userinstaller.action.DeleteRegKey;
-import dev.tomek.userinstaller.action.InstallSettingsRepo;
+import dev.tomek.userinstaller.action.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import picocli.CommandLine;
@@ -12,10 +9,17 @@ import picocli.CommandLine;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
+import java.time.Instant;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 @SuppressWarnings("unused")
@@ -46,6 +50,14 @@ public abstract class IntellijInstaller implements Runnable {
         final Path homeDir = Paths.get(userHome);
         final Path jb1 = Paths.get("C:", "users", userName, "AppData", "Roaming", "JetBrains");
         final Path jb2 = Paths.get("C:", "users", userName, "AppData", "Local", "JetBrains");
+
+        final Optional<Path> foundInstallation = findNewInstallDir();
+        if (foundInstallation.isEmpty()) {
+            throw new IllegalStateException("Could not find new installation dir");
+        }
+        final Path newInstallation = foundInstallation.get();
+        System.out.println("New installation: " + newInstallation);
+        System.out.println("User home dir: " + homeDir);
         confirmInstallation();
 
         final Stream<Action> actions = Stream.concat(
@@ -54,7 +66,8 @@ public abstract class IntellijInstaller implements Runnable {
                 new DeleteDir(jb1),
                 new DeleteDir(jb2),
                 new DeleteRegKey("HKCU\\Software\\JavaSoft\\Prefs\\jetbrains"),
-                new InstallSettingsRepo(homeDir, applicationName, settingsRepoUrl)
+                new InstallSettingsRepo(homeDir, applicationName, settingsRepoUrl),
+                new SetVmOptions(homeDir, applicationName, newInstallation.resolve(Paths.get("bin", applicationName + "64.exe.vmoptions")))
             ),
             getCustomActions().stream()
         );
@@ -79,5 +92,24 @@ public abstract class IntellijInstaller implements Runnable {
         }
         System.out.println("Installation interrupted. Exiting.");
         System.exit(0);
+    }
+
+    private Optional<Path> findNewInstallDir() {
+        try {
+            return Files.find(Paths.get(appsDir), 1, (p, a) -> a.isDirectory() && p.getFileName().toString().toLowerCase(Locale.ROOT).startsWith(applicationName))
+                .map(p -> {
+                    FileTime fileTime;
+                    try {
+                        fileTime = Files.readAttributes(p, BasicFileAttributes.class).lastModifiedTime();
+                    } catch (IOException e) {
+                        fileTime = FileTime.from(Instant.now());
+                    }
+                    return Map.entry(p, fileTime);
+                }).min(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey);
+        } catch (IOException e) {
+            LOGGER.error("Cannot find install dirs", e);
+        }
+        return Optional.empty();
     }
 }
