@@ -35,4 +35,4 @@ Check:
 Deploy:
   stage: deploy
   script:
-    - './gradlew --build-cache publish'
+    - './gradlew --build-cache publish final -Prelease.scope=patch'

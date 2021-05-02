@@ -2,6 +2,7 @@ plugins {
     id 'idea'
     id 'application'
     id 'maven-publish'
+    id 'nebula.release' version '15.3.1'
 }
 
 group = 'dev.tomek'
