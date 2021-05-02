@@ -54,7 +54,7 @@ public abstract class IntellijInstaller implements Runnable {
                 new DeleteDir(jb1),
                 new DeleteDir(jb2),
                 new DeleteRegKey("HKCU\\Software\\JavaSoft\\Prefs\\jetbrains"),
-                new InstallSettingsRepo(homeDir, settingsRepoUrl)
+                new InstallSettingsRepo(homeDir, applicationName, settingsRepoUrl)
             ),
             getCustomActions().stream()
         );

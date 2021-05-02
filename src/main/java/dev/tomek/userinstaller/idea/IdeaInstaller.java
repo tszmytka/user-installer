@@ -80,7 +80,7 @@ public class IdeaInstaller implements Runnable {
                 List.of("user.home", "idea.config.path", "idea.system.path", "idea.plugins.path", "idea.log.path")
             ),
 
-            new InstallSettingsRepo(homeDir, settingsRepoUrl),
+            new InstallSettingsRepo(homeDir, "idea", settingsRepoUrl),
             new CopyFiles(
                 homeDir.resolve(Paths.get("idea", "config", "settingsRepository", "repository", "external", "templates")), homeDir.resolve(Paths.get("idea"))
             ),
