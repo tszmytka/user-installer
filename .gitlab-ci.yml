@@ -43,7 +43,7 @@ Deploy:
   except:
     - tags
   before_script:
-    - apk add --no-cache git=2.31.1
+    - apk add --no-cache git=2.26
     - url_host=`git remote get-url origin | sed -e "s/https:\/\/gitlab-ci-token:.*@//g"`
     - git remote set-url origin "https://$GIT_ACCESS_USER:$GIT_ACCESS_PASSWORD@${url_host}"
   script:
