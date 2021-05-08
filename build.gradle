@@ -7,8 +7,8 @@ plugins {
 group = 'dev.tomek'
 
 ext {
-    sourceCompatibility = 15
-    lombokVersion = '1.18.18'
+    sourceCompatibility = 16
+    lombokVersion = '1.18.20'
     jacksonVersion = '2.12.2'
     mainClassName = 'dev.tomek.userinstaller.idea.IdeaInstaller'
 }
@@ -24,6 +24,7 @@ dependencies {
     compileOnly "org.projectlombok:lombok:$lombokVersion"
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"
     implementation "com.fasterxml.jackson.core:jackson-core:$jacksonVersion"
+    implementation "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
 
     testImplementation platform('org.junit:junit-bom:5.7.1')
     testImplementation 'org.junit.jupiter:junit-jupiter'
