@@ -19,15 +19,11 @@ cache:
 
 Compile:
   stage: build
-  except:
-    - tags
   script:
     - './gradlew --build-cache classes'
 
 Test:
   stage: test
-  except:
-    - tags
   script:
     - './gradlew test'
 
@@ -42,8 +38,6 @@ Deploy:
   rules:
     - if: '$CI_COMMIT_BRANCH == "master"'
   stage: deploy
-  except:
-    - tags
   before_script:
     - apk add --no-cache git openssh-client
     - git remote set-url origin "git@$(git remote get-url origin | cut -d '@' -f2 | sed -e 's|com/|com:|g')"
@@ -52,4 +46,4 @@ Deploy:
     - ssh-keyscan -H gitlab.com >> ~/.ssh/known_hosts
     - eval `ssh-agent -s` && echo "${CITAGGER_KEY}" | tr -d '\r' | ssh-add - > /dev/null
   script:
-    - './gradlew --build-cache publish final -Prelease.scope=patch --debug'
+    - './gradlew --build-cache publish final -Prelease.scope=patch'
