@@ -48,5 +48,6 @@ Deploy:
     - git config --global user.email "${CITAGGER_EMAIL}" && git config --global user.name "${CITAGGER_PASSWORD}"
     - mkdir -p ~/.ssh && chmod 700 ~/.ssh
     - ssh-keyscan -H gitlab.com >> ~/.ssh/known_hosts
+    - eval `ssh-agent -s` && echo "${SSH_PRIVATE_KEY}" | tr -d '\r' | ssh-add - > /dev/null
   script:
-    - './gradlew --build-cache publish final -Prelease.scope=patch'
+    - './gradlew --build-cache publish final -Prelease.scope=patch --debug'
