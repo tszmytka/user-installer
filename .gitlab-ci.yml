@@ -46,6 +46,7 @@ Deploy:
     - apk add --no-cache git openssh-client
     - git remote set-url origin "git@$(git remote get-url origin | cut -d '@' -f2 | sed -e 's|com/|com:|g')"
     - git config --global user.email "${CITAGGER_EMAIL}" && git config --global user.name "${CITAGGER_PASSWORD}"
+    - mkdir -p ~/.ssh && chmod 700 ~/.ssh
     - ssh-keyscan -H gitlab.com >> ~/.ssh/known_hosts
   script:
     - './gradlew --build-cache publish final -Prelease.scope=patch'
