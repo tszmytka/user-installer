@@ -2,6 +2,7 @@ plugins {
     id 'idea'
     id 'application'
     id 'maven-publish'
+    id 'nebula.release' version '15.3.1'
 }
 
 group = 'dev.tomek'
@@ -11,6 +12,8 @@ ext {
     lombokVersion = '1.18.20'
     jacksonVersion = '2.12.2'
     mainClassName = 'dev.tomek.userinstaller.idea.IdeaInstaller'
+    // for phpstorm
+//    mainClassName = 'dev.tomek.userinstaller.intellij.phpstorm.PhpStormInstaller'
 }
 
 repositories {
@@ -69,4 +72,3 @@ publishing {
         }
     }
 }
-

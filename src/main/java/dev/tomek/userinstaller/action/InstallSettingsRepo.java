@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class InstallSettingsRepo implements Action {
     private final Path homeDir;
+    private final String applicationName;
     private final String repoUrl;
 
     @Override
@@ -23,7 +24,7 @@ public class InstallSettingsRepo implements Action {
 
     @Override
     public Result perform() {
-        final Path destination = homeDir.resolve(Paths.get("idea", "config", "settingsRepository", "repository"));
+        final Path destination = homeDir.resolve(Paths.get(applicationName, "config", "settingsRepository", "repository"));
         Process process = null;
         try {
             Files.createDirectories(destination);
