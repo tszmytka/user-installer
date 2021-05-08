@@ -9,7 +9,7 @@ group = 'dev.tomek'
 
 ext {
     sourceCompatibility = 15
-    lombokVersion = '1.18.18'
+    lombokVersion = '1.18.20'
     mainClassName = 'dev.tomek.userinstaller.intellij.idea.IdeaInstaller'
     // for phpstorm
 //    mainClassName = 'dev.tomek.userinstaller.intellij.phpstorm.PhpStormInstaller'
