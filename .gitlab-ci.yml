@@ -40,6 +40,8 @@ Check:
 
 Deploy:
   stage: deploy
+  only:
+    - master
   except:
     - tags
   before_script:
