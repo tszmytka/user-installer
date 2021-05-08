@@ -1,9 +1,13 @@
 package dev.tomek.userinstaller.action;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -27,7 +31,6 @@ public class InstallPlugin implements Action {
 
     @Override
     public Result perform() {
-
         // todo find newest updateId
         final int updateId = 118941;
         final String pluginUrl = DOWNLOAD_BASE + updateId;
@@ -54,7 +57,7 @@ public class InstallPlugin implements Action {
         return new URL(API_BASE + "%s/updates".formatted(pluginId));
     }
 
-//    @JsonIgnoreProperties(ignoreUnknown = true)
-//    private record Update(int id, String version, String file) {
-//    }
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    private record Update(int id, String version, String file) {
+    }
 }
