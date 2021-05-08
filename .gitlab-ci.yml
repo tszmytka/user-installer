@@ -19,11 +19,15 @@ cache:
 
 Compile:
   stage: build
+  except:
+    - tags
   script:
     - './gradlew --build-cache classes'
 
 Test:
   stage: test
+  except:
+    - tags
   script:
     - './gradlew test'
 
