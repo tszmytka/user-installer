@@ -2,6 +2,7 @@ package dev.tomek.userinstaller.intellij.idea;
 
 import dev.tomek.userinstaller.action.Action;
 import dev.tomek.userinstaller.action.CopyFiles;
+import dev.tomek.userinstaller.action.InstallPlugin;
 import dev.tomek.userinstaller.action.ResolveVars;
 import dev.tomek.userinstaller.intellij.IntellijInstaller;
 import lombok.extern.slf4j.Slf4j;
@@ -37,17 +38,18 @@ public class IdeaInstaller extends IntellijInstaller {
     @Override
     protected List<Action> buildCustomActions(Path homeDir, Path newInstallation) {
         return List.of(
-            new CopyFiles(
-                homeDir.resolve(Paths.get("idea", "config", "settingsRepository", "repository", "external", "templates")), homeDir.resolve(Paths.get("idea"))
-            ),
-            new ResolveVars(homeDir.resolve(Paths.get("idea", "config", "options")), Map.of(
-                "$GRADLE_CACHES", homeDir.resolve(Paths.get(".gradle", "caches")).toString(),
-                "$KOTLIN_BUNDLED", newInstallation.resolve(Paths.get("plugins", "Kotlin", "kotlinc")).toString(),
-                "$MAVEN_REPOSITORY", homeDir.resolve(Paths.get(".m2", "repository")).toString(),
-                "$mavenHome", mavenHome,
-                "$homePathJdk8", jdk8Home,
-                "$homePathJdk15", jdkHome
-            ))
+//            new CopyFiles(
+//                homeDir.resolve(Paths.get("idea", "config", "settingsRepository", "repository", "external", "templates")), homeDir.resolve(Paths.get("idea"))
+//            ),
+//            new ResolveVars(homeDir.resolve(Paths.get("idea", "config", "options")), Map.of(
+//                "$GRADLE_CACHES", homeDir.resolve(Paths.get(".gradle", "caches")).toString(),
+//                "$KOTLIN_BUNDLED", newInstallation.resolve(Paths.get("plugins", "Kotlin", "kotlinc")).toString(),
+//                "$MAVEN_REPOSITORY", homeDir.resolve(Paths.get(".m2", "repository")).toString(),
+//                "$mavenHome", mavenHome,
+//                "$homePathJdk8", jdk8Home,
+//                "$homePathJdk15", jdkHome
+//            )),
+            new InstallPlugin("Extra Icons", 11058, homeDir.resolve(Paths.get("idea")))
         );
     }
 }

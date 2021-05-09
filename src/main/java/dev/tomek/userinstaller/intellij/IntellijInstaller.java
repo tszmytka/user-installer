@@ -63,12 +63,12 @@ public abstract class IntellijInstaller implements Runnable {
 
         final Stream<Action> actions = Stream.concat(
             Stream.of(
-                new DeleteDir(homeDir.resolve(Paths.get(applicationName))),
-                new DeleteDir(jb1),
-                new DeleteDir(jb2),
-                new DeleteRegKey("HKCU\\Software\\JavaSoft\\Prefs\\jetbrains"),
-                new InstallSettingsRepo(homeDir, applicationName, settingsRepoUrl),
-                new SetVmOptions(homeDir, applicationName, newInstallation.resolve(Paths.get("bin", applicationName + "64.exe.vmoptions")))
+//                new DeleteDir(homeDir.resolve(Paths.get(applicationName))),
+//                new DeleteDir(jb1),
+//                new DeleteDir(jb2),
+//                new DeleteRegKey("HKCU\\Software\\JavaSoft\\Prefs\\jetbrains"),
+//                new InstallSettingsRepo(homeDir, applicationName, settingsRepoUrl),
+//                new SetVmOptions(homeDir, applicationName, newInstallation.resolve(Paths.get("bin", applicationName + "64.exe.vmoptions")))
             ),
             buildCustomActions(homeDir, newInstallation).stream()
         );
