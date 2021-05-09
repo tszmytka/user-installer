@@ -21,7 +21,6 @@ import java.nio.file.StandardCopyOption;
 public class InstallPlugin implements Action {
     private static final String API_BASE = "https://plugins.jetbrains.com/api/plugins/";
     private static final String DOWNLOAD_BASE = "https://plugins.jetbrains.com/plugin/download?updateId=";
-    private static final Path TMP_DIR = Paths.get("D:", "tmp", "downloads");
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private final String pluginName;
@@ -42,14 +41,11 @@ public class InstallPlugin implements Action {
                 return Result.ERROR;
             }
             final Update newest = updates[0];
-            final String pluginUrl = DOWNLOAD_BASE + newest.id;
-            // todo download pluginUrl
-            final Path source = TMP_DIR.resolve(Paths.get("Extra_Icons-1.52.0.201.zip"));
-
             final Path systemPlugins = userHomeDir.resolve(Paths.get("system", "plugins"));
-            final Path target = systemPlugins.resolve(pluginName + ".zip");
-            Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
 
+            final URL pluginUrl = new URL(DOWNLOAD_BASE + newest.id);
+            final Path target = systemPlugins.resolve(pluginName + ".zip");
+            Files.copy(pluginUrl.openStream(), target, StandardCopyOption.REPLACE_EXISTING);
             final Path installTarget = userHomeDir.resolve(Paths.get("plugins"));
             final StartupActionScriptManager.ActionCommand[] actionCommands = {
                 new StartupActionScriptManager.DeleteCommand(installTarget.resolve(pluginName).toAbsolutePath().toString()),
