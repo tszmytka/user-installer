@@ -42,6 +42,7 @@ public class InstallPlugin implements Action {
             }
             final Update newest = updates[0];
             final Path systemPlugins = userHomeDir.resolve(Paths.get("system", "plugins"));
+            Files.createDirectories(systemPlugins);
 
             final URL pluginUrl = new URL(DOWNLOAD_BASE + newest.id);
             final Path target = systemPlugins.resolve(pluginName + ".zip");
