@@ -2,7 +2,7 @@ package dev.tomek.userinstaller.intellij.idea;
 
 import dev.tomek.userinstaller.action.Action;
 import dev.tomek.userinstaller.action.CopyFiles;
-import dev.tomek.userinstaller.action.InstallPlugin;
+import dev.tomek.userinstaller.action.InstallPlugins;
 import dev.tomek.userinstaller.action.ResolveVars;
 import dev.tomek.userinstaller.intellij.IntellijInstaller;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +49,10 @@ public class IdeaInstaller extends IntellijInstaller {
                 "$homePathJdk8", jdk8Home,
                 "$homePathJdk15", jdkHome
             )),
-            new InstallPlugin("Extra Icons", 11058, homeDir.resolve(Paths.get("idea")))
+            new InstallPlugins(homeDir.resolve(Paths.get("idea")), List.of(
+                new InstallPlugins.Plugin(11058, "Extra Icons"),
+                new InstallPlugins.Plugin(9471, "TestMe")
+            ))
         );
     }
 }
