@@ -60,42 +60,42 @@ public abstract class IntellijInstaller implements Runnable {
         final Path newInstallation = foundInstallation.get();
         System.out.println("New installation: " + newInstallation);
         System.out.println("User home dir: " + homeDir);
-        confirmInstallation();
-
-        final Stream<Action> actions = Stream.concat(
-            Stream.of(
-                new DeleteDir(homeDir.resolve(Paths.get(applicationName))),
-                new DeleteDir(jb1),
-                new DeleteDir(jb2),
-                new DeleteRegKey("HKCU\\Software\\JavaSoft\\Prefs\\jetbrains"),
-                new InstallSettingsRepo(homeDir, applicationName, settingsRepoUrl),
-                new SetVmOptions(homeDir, applicationName, newInstallation.resolve(Paths.get("bin", applicationName + "64.exe.vmoptions")))
-            ),
-            buildCustomActions(homeDir, newInstallation).stream()
-        );
-        actions.forEach(a -> {
-            System.out.print(a.getName() + " ... ");
-            AnsiConsole.printResult(a.perform());
-        });
+        if (installationConfirmed()) {
+            final Stream<Action> actions = Stream.concat(
+                Stream.of(
+                    new DeleteDir(homeDir.resolve(Paths.get(applicationName))),
+                    new DeleteDir(jb1),
+                    new DeleteDir(jb2),
+                    new DeleteRegKey("HKCU\\Software\\JavaSoft\\Prefs\\jetbrains"),
+                    new InstallSettingsRepo(homeDir, applicationName, settingsRepoUrl),
+                    new SetVmOptions(homeDir, applicationName, newInstallation.resolve(Paths.get("bin", applicationName + "64.exe.vmoptions")))
+                ),
+                buildCustomActions(homeDir, newInstallation).stream()
+            );
+            actions.forEach(a -> {
+                System.out.print(a.getName() + " ... ");
+                AnsiConsole.printResult(a.perform());
+            });
+        } else {
+            System.out.println("Installation interrupted. Exiting.");
+        }
         System.out.println("Installation finished.");
         final LocalTime elapsed = LocalTime.ofNanoOfDay(System.nanoTime() - t0);
         System.out.println("Elapsed time: " + elapsed);
         LOGGER.info("Finished %s. Elapsed: %s".formatted(job, elapsed));
     }
 
-
-    private void confirmInstallation() {
+    private boolean installationConfirmed() {
         try {
             System.out.println("Proceed with installation? (yes, no)");
             final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             if ("yes".equals(reader.readLine())) {
-                return;
+                return true;
             }
         } catch (IOException e) {
             LOGGER.error("Error while reading user input", e);
         }
-        System.out.println("Installation interrupted. Exiting.");
-        System.exit(0);
+        return false;
     }
 
     private Optional<Path> findNewInstallDir() {
