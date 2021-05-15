@@ -26,7 +26,6 @@ import java.util.stream.Stream;
 @Slf4j
 @RequiredArgsConstructor
 public abstract class IntellijInstaller implements Runnable {
-
     private final String applicationName;
 
     @CommandLine.Option(names = {"-d", "--home-dir"}, description = "User home directory - where application config dir will be located.", required = true)
@@ -47,6 +46,8 @@ public abstract class IntellijInstaller implements Runnable {
     @Override
     public void run() {
         System.out.printf("User Installer for an Intellij Application (%s)%n", applicationName);
+        final String job = "installing %s".formatted(applicationName);
+        LOGGER.info("Start " + job);
         final long t0 = System.nanoTime();
         final Path homeDir = Paths.get(userHome);
         final Path jb1 = Paths.get("C:", "users", userName, "AppData", "Roaming", "JetBrains");
@@ -77,7 +78,9 @@ public abstract class IntellijInstaller implements Runnable {
             AnsiConsole.printResult(a.perform());
         });
         System.out.println("Installation finished.");
-        System.out.println("Elapsed time: " + LocalTime.ofNanoOfDay(System.nanoTime() - t0));
+        final LocalTime elapsed = LocalTime.ofNanoOfDay(System.nanoTime() - t0);
+        System.out.println("Elapsed time: " + elapsed);
+        LOGGER.info("Finished %s. Elapsed: %s".formatted(job, elapsed));
     }
 
 
