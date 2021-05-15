@@ -9,6 +9,7 @@ group = 'dev.tomek'
 
 ext {
     sourceCompatibility = 16
+    picoCliVersion = '4.6.1'
     lombokVersion = '1.18.20'
     jacksonVersion = '2.12.2'
     mainClassName = 'dev.tomek.userinstaller.intellij.idea.IdeaInstaller'
@@ -22,7 +23,8 @@ repositories {
 }
 
 dependencies {
-    implementation 'info.picocli:picocli:4.6.1'
+    implementation "info.picocli:picocli:$picoCliVersion"
+    annotationProcessor "info.picocli:picocli-codegen:$picoCliVersion"
     implementation "ch.qos.logback:logback-classic:1.2.3"
     compileOnly "org.projectlombok:lombok:$lombokVersion"
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"
@@ -36,6 +38,10 @@ dependencies {
 
 application {
     mainClass = project.mainClassName
+}
+
+compileJava {
+    options.compilerArgs += ["-Aproject=${project.group}/${project.name}"]
 }
 
 jar {
