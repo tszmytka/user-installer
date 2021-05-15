@@ -24,6 +24,7 @@ public class DeleteDir implements Action {
 
     @Override
     public Result perform() {
+        LOGGER.info("Deleting " + dir);
         try {
             if (Files.exists(dir)) {
                 final boolean dosAttrsSupported = Files.getFileStore(dir).supportsFileAttributeView(DosFileAttributeView.class);
