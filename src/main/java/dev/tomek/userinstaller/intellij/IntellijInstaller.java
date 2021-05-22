@@ -109,7 +109,7 @@ public abstract class IntellijInstaller implements Runnable {
                         fileTime = FileTime.from(Instant.now());
                     }
                     return Map.entry(p, fileTime);
-                }).min(Map.Entry.comparingByValue())
+                }).max(Map.Entry.comparingByValue())
                 .map(Map.Entry::getKey);
         } catch (IOException e) {
             LOGGER.error("Cannot find install dirs", e);
