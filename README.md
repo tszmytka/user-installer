@@ -1,6 +1,6 @@
 # User Installer
 
-Command line application used to install applications as a regular (non-admin) user.
+Command line application used to install other tools and apps as a regular (non-admin) user.
 
 ## Technology Stack
 
@@ -10,7 +10,9 @@ Command line application used to install applications as a regular (non-admin) u
 - PicoCli 4.6
 
 ## Building a GraalVM Native Image
+
 After successfully building the jar a GraalVM Native Image can be built with
+
 ```
 native-image --no-fallback --allow-incomplete-classpath -jar "user-installer.jar"
 ```
