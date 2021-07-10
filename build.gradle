@@ -30,6 +30,7 @@ dependencies {
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"
     implementation "com.fasterxml.jackson.core:jackson-core:$jacksonVersion"
     implementation "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
+    implementation 'org.fusesource.jansi:jansi:2.3.3'
 
     testImplementation platform('org.junit:junit-bom:5.7.1')
     testImplementation 'org.junit.jupiter:junit-jupiter'

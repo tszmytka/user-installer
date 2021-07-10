@@ -6,6 +6,7 @@ import dev.tomek.userinstaller.action.InstallPlugins;
 import dev.tomek.userinstaller.action.ResolveVars;
 import dev.tomek.userinstaller.intellij.IntellijInstaller;
 import lombok.extern.slf4j.Slf4j;
+import org.fusesource.jansi.AnsiConsole;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 
@@ -32,7 +33,9 @@ public class IdeaInstaller extends IntellijInstaller {
     }
 
     public static void main(String[] args) {
+        AnsiConsole.systemInstall();
         System.exit(new CommandLine(new IdeaInstaller()).execute(args));
+        AnsiConsole.systemUninstall();
     }
 
     @Override
