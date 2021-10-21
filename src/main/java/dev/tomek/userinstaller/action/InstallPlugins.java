@@ -29,6 +29,11 @@ public class InstallPlugins implements Action {
     private static final String DOWNLOAD_BASE = "https://plugins.jetbrains.com/plugin/download?updateId=";
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
+    public static final Plugin EXTRA_ICONS = new Plugin(11058, "Extra Icons");
+    public static final Plugin TEST_ME = new Plugin(9471, "TestMe");
+    public static final Plugin TOML = new Plugin(8195, "Toml");
+    public static final Plugin RUST = new Plugin(8182, "Rust");
+
     private final Path userHomeDir;
     private final List<Plugin> pluginsToInstall;
 

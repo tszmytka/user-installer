@@ -42,7 +42,6 @@ public abstract class IntellijInstaller implements Runnable {
 
     protected abstract List<Action> buildCustomActions(Path homeDir, Path newInstallation);
 
-
     @Override
     public void run() {
         System.out.printf("User Installer for an Intellij Application (%s)%n", applicationName);

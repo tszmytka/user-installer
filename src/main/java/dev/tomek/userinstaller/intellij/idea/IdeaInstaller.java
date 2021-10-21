@@ -54,8 +54,8 @@ public class IdeaInstaller extends IntellijInstaller {
                 "$homePathJdk15", jdkHome
             )),
             new InstallPlugins(homeDir.resolve(Paths.get("idea")), List.of(
-                new InstallPlugins.Plugin(11058, "Extra Icons"),
-                new InstallPlugins.Plugin(9471, "TestMe")
+                InstallPlugins.EXTRA_ICONS,
+                InstallPlugins.TEST_ME
             ))
         );
     }
