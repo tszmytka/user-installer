@@ -6,13 +6,19 @@ import dev.tomek.userinstaller.intellij.IntellijInstaller;
 import lombok.extern.slf4j.Slf4j;
 import org.fusesource.jansi.AnsiConsole;
 import picocli.CommandLine;
+import picocli.CommandLine.Command;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+/**
+ * Example usage:
+ * <p>
+ * <code>java -jar user-installer.jar -d D:/AppData -u ts32023 -a D:/Applications -s git@gitlab.com:tszmytka/rust-settings.git</code>
+ */
 @Slf4j
-@CommandLine.Command(mixinStandardHelpOptions = true)
+@Command(mixinStandardHelpOptions = true)
 public class ClionInstaller extends IntellijInstaller {
 
     public ClionInstaller() {
