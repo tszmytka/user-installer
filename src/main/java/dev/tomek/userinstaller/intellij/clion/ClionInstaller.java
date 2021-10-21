@@ -1,6 +1,7 @@
 package dev.tomek.userinstaller.intellij.clion;
 
 import dev.tomek.userinstaller.action.Action;
+import dev.tomek.userinstaller.action.CopyFiles;
 import dev.tomek.userinstaller.action.InstallPlugins;
 import dev.tomek.userinstaller.intellij.IntellijInstaller;
 import lombok.extern.slf4j.Slf4j;
@@ -22,9 +23,10 @@ import static dev.tomek.userinstaller.action.InstallPlugins.*;
 @Slf4j
 @Command(mixinStandardHelpOptions = true)
 public class ClionInstaller extends IntellijInstaller {
+    private static final String CLION = "clion";
 
     public ClionInstaller() {
-        super("clion");
+        super(CLION);
     }
 
     public static void main(String[] args) {
@@ -36,7 +38,10 @@ public class ClionInstaller extends IntellijInstaller {
     @Override
     protected List<Action> buildCustomActions(Path homeDir, Path newInstallation) {
         return List.of(
-            new InstallPlugins(homeDir.resolve(Paths.get("clion")), List.of(
+            new CopyFiles(
+                homeDir.resolve(Paths.get("idea", "config", "settingsRepository", "repository", "external", "templates")), homeDir.resolve(Paths.get(CLION))
+            ),
+            new InstallPlugins(homeDir.resolve(Paths.get(CLION)), List.of(
                 TOML,
                 RUST,
                 EXTRA_ICONS
