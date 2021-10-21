@@ -4,7 +4,7 @@ Command line application used to install other tools and apps as a regular (non-
 
 ## Technology Stack
 
-- Java 16
+- Java 17
 - GraalVM CE 21.1.0
 - Gradle 7.0
 - PicoCli 4.6
