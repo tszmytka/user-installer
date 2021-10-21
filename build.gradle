@@ -2,13 +2,13 @@ plugins {
     id 'idea'
     id 'application'
     id 'maven-publish'
-    id 'nebula.release' version '15.3.1'
+    id 'nebula.release' version '16.0.0'
 }
 
 group = 'dev.tomek'
 
 ext {
-    sourceCompatibility = 16
+    sourceCompatibility = 17
     picoCliVersion = '4.6.1'
     lombokVersion = '1.18.20'
     jacksonVersion = '2.12.2'

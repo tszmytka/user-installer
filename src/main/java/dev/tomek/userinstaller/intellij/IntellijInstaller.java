@@ -4,7 +4,7 @@ import dev.tomek.userinstaller.AnsiConsole;
 import dev.tomek.userinstaller.action.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import picocli.CommandLine;
+import picocli.CommandLine.Option;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,16 +28,16 @@ import java.util.stream.Stream;
 public abstract class IntellijInstaller implements Runnable {
     private final String applicationName;
 
-    @CommandLine.Option(names = {"-d", "--home-dir"}, description = "User home directory - where application config dir will be located.", required = true)
+    @Option(names = {"-d", "--home-dir"}, description = "User home directory - where application config dir will be located.", required = true)
     private String userHome;
 
-    @CommandLine.Option(names = {"-u", "--user"}, description = "User name. Used to locate additional settings needing cleaning up.", required = true)
+    @Option(names = {"-u", "--user"}, description = "User name. Used to locate additional settings needing cleaning up.", required = true)
     private String userName;
 
-    @CommandLine.Option(names = {"-a", "--apps-dir"}, description = "Applications directory. Where the old and new Intellij installs reside.", required = true)
+    @Option(names = {"-a", "--apps-dir"}, description = "Applications directory. Where the old and new Intellij installs reside.", required = true)
     private String appsDir;
 
-    @CommandLine.Option(names = {"-s", "--settings-repo"}, description = "Url to settings repository. This will be cloned and installed.", required = true)
+    @Option(names = {"-s", "--settings-repo"}, description = "Url to settings repository. This will be cloned and installed.", required = true)
     private String settingsRepoUrl;
 
     protected abstract List<Action> buildCustomActions(Path homeDir, Path newInstallation);

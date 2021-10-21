@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.fusesource.jansi.AnsiConsole;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,13 +20,13 @@ import java.util.Map;
 @Slf4j
 @Command(mixinStandardHelpOptions = true)
 public class IdeaInstaller extends IntellijInstaller {
-    @CommandLine.Option(names = {"-m", "--maven-home"}, description = "Maven home directory.", required = true)
+    @Option(names = {"-m", "--maven-home"}, description = "Maven home directory.", required = true)
     private String mavenHome;
 
-    @CommandLine.Option(names = {"-j", "--jdk-home"}, description = "Main JDK home directory.", required = true)
+    @Option(names = {"-j", "--jdk-home"}, description = "Main JDK home directory.", required = true)
     private String jdkHome;
 
-    @CommandLine.Option(names = {"-j8", "--jdk8-home"}, description = "JDK 8 home directory.", required = true)
+    @Option(names = {"-j8", "--jdk8-home"}, description = "JDK 8 home directory.", required = true)
     private String jdk8Home;
 
     public IdeaInstaller() {
