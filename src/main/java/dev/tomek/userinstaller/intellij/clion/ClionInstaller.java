@@ -12,6 +12,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+import static dev.tomek.userinstaller.action.InstallPlugins.*;
+
 /**
  * Example usage:
  * <p>
@@ -34,10 +36,10 @@ public class ClionInstaller extends IntellijInstaller {
     @Override
     protected List<Action> buildCustomActions(Path homeDir, Path newInstallation) {
         return List.of(
-            new InstallPlugins(homeDir.resolve(Paths.get("idea")), List.of(
-                InstallPlugins.TOML,
-                InstallPlugins.RUST,
-                InstallPlugins.EXTRA_ICONS
+            new InstallPlugins(homeDir.resolve(Paths.get("clion")), List.of(
+                TOML,
+                RUST,
+                EXTRA_ICONS
             ))
         );
     }
