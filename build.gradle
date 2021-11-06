@@ -16,16 +16,6 @@ ext {
     mainClassName = 'dev.tomek.userinstaller.intellij.idea.IdeaInstaller'
     // for phpstorm
 //    mainClassName = 'dev.tomek.userinstaller.intellij.phpstorm.PhpStormInstaller'
-
-    getGitHash = { ->
-        def stdout = new ByteArrayOutputStream()
-        exec {
-//            commandLine 'git', 'rev-parse', 'HEAD'
-            commandLine 'ls -al', '/root'
-            standardOutput = stdout
-        }
-        return stdout.toString().trim()
-    }
 }
 
 repositories {
@@ -61,7 +51,7 @@ jar {
         attributes([
             'Main-Class'         : project.mainClassName,
             "Application-Version": project.version,
-            "Application-Commit" : grgit.head().abbreviatedId
+            "Application-Commit" : grgit.head().id
         ])
 
     }
