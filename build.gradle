@@ -16,14 +16,14 @@ ext {
     // for phpstorm
 //    mainClassName = 'dev.tomek.userinstaller.intellij.phpstorm.PhpStormInstaller'
 
-//    getGitHash = { ->
-//        def stdout = new ByteArrayOutputStream()
-//        exec {
-//            commandLine 'git', 'rev-parse', 'HEAD'
-//            standardOutput = stdout
-//        }
-//        return stdout.toString().trim()
-//    }
+    getGitHash = { ->
+        def stdout = new ByteArrayOutputStream()
+        exec {
+            commandLine 'git', 'rev-parse', 'HEAD'
+            standardOutput = stdout
+        }
+        return stdout.toString().trim()
+    }
 }
 
 repositories {
