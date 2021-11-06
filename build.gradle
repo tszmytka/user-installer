@@ -55,6 +55,7 @@ jar {
         ])
 
     }
+    duplicatesStrategy DuplicatesStrategy.INCLUDE
     from(configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }) {
         exclude "META-INF/*.SF"
         exclude "META-INF/*.DSA"
