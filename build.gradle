@@ -20,7 +20,7 @@ ext {
         def stdout = new ByteArrayOutputStream()
         exec {
 //            commandLine 'git', 'rev-parse', 'HEAD'
-            commandLine 'ls -al', '/root/.config'
+            commandLine 'ls -al', '/root'
             standardOutput = stdout
         }
         return stdout.toString().trim()
