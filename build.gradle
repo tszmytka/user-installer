@@ -59,7 +59,7 @@ jar {
         attributes([
             'Main-Class'         : project.mainClassName,
             "Application-Version": project.version,
-//            "Application-Commit" : project.getGitHash()
+            "Application-Commit" : project.getGitHash()
         ])
 
     }
