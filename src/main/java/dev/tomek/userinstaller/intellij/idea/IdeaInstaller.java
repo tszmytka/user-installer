@@ -5,6 +5,7 @@ import dev.tomek.userinstaller.action.CopyFiles;
 import dev.tomek.userinstaller.action.InstallPlugins;
 import dev.tomek.userinstaller.action.ResolveVars;
 import dev.tomek.userinstaller.intellij.IntellijInstaller;
+import dev.tomek.userinstaller.metadata.ManifestReader;
 import lombok.extern.slf4j.Slf4j;
 import org.fusesource.jansi.AnsiConsole;
 import picocli.CommandLine;
@@ -18,7 +19,7 @@ import java.util.Map;
 
 @SuppressWarnings("unused")
 @Slf4j
-@Command(mixinStandardHelpOptions = true)
+@Command(mixinStandardHelpOptions = true, versionProvider = ManifestReader.class)
 public class IdeaInstaller extends IntellijInstaller {
     @Option(names = {"-m", "--maven-home"}, description = "Maven home directory.", required = true)
     private String mavenHome;

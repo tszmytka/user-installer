@@ -22,7 +22,7 @@ Compile:
   except:
     - tags
   script:
-    - './gradlew --build-cache classes'
+    - './gradlew --build-cache classes --stacktrace'
 
 Test:
   stage: test
