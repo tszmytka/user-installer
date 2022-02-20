@@ -4,11 +4,7 @@ import dev.tomek.userinstaller.action.Action;
 import dev.tomek.userinstaller.action.CopyFiles;
 import dev.tomek.userinstaller.action.InstallPlugins;
 import dev.tomek.userinstaller.intellij.IntellijInstaller;
-import dev.tomek.userinstaller.metadata.ManifestReader;
 import lombok.extern.slf4j.Slf4j;
-import org.fusesource.jansi.AnsiConsole;
-import picocli.CommandLine;
-import picocli.CommandLine.Command;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -22,18 +18,11 @@ import static dev.tomek.userinstaller.action.InstallPlugins.*;
  * <code>java -jar user-installer.jar -d D:/AppData -u ts32023 -a D:/Applications -s git@gitlab.com:tszmytka/rust-settings.git</code>
  */
 @Slf4j
-@Command(mixinStandardHelpOptions = true, versionProvider = ManifestReader.class)
 public class ClionInstaller extends IntellijInstaller {
     private static final String CLION = "clion";
 
-    public ClionInstaller() {
-        super(CLION);
-    }
-
-    public static void main(String[] args) {
-        AnsiConsole.systemInstall();
-        System.exit(new CommandLine(new ClionInstaller()).execute(args));
-        AnsiConsole.systemUninstall();
+    public ClionInstaller(String userHome, String settingsRepoUrl, String appsDir) {
+        super(CLION, userHome, settingsRepoUrl, appsDir);
     }
 
     @Override

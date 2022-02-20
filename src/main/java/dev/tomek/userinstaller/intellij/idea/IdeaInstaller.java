@@ -5,12 +5,7 @@ import dev.tomek.userinstaller.action.CopyFiles;
 import dev.tomek.userinstaller.action.InstallPlugins;
 import dev.tomek.userinstaller.action.ResolveVars;
 import dev.tomek.userinstaller.intellij.IntellijInstaller;
-import dev.tomek.userinstaller.metadata.ManifestReader;
 import lombok.extern.slf4j.Slf4j;
-import org.fusesource.jansi.AnsiConsole;
-import picocli.CommandLine;
-import picocli.CommandLine.Command;
-import picocli.CommandLine.Option;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,25 +14,16 @@ import java.util.Map;
 
 @SuppressWarnings("unused")
 @Slf4j
-@Command(mixinStandardHelpOptions = true, versionProvider = ManifestReader.class)
 public class IdeaInstaller extends IntellijInstaller {
-    @Option(names = {"-m", "--maven-home"}, description = "Maven home directory.", required = true)
-    private String mavenHome;
+    private final String mavenHome;
+    private final String jdkHome;
+    private final String jdk8Home;
 
-    @Option(names = {"-j", "--jdk-home"}, description = "Main JDK home directory.", required = true)
-    private String jdkHome;
-
-    @Option(names = {"-j8", "--jdk8-home"}, description = "JDK 8 home directory.", required = true)
-    private String jdk8Home;
-
-    public IdeaInstaller() {
-        super("idea");
-    }
-
-    public static void main(String[] args) {
-        AnsiConsole.systemInstall();
-        System.exit(new CommandLine(new IdeaInstaller()).execute(args));
-        AnsiConsole.systemUninstall();
+    public IdeaInstaller(String userHome, String settingsRepoUrl, String appsDir, String mavenHome, String jdkHome, String jdk8Home) {
+        super("idea", userHome, settingsRepoUrl, appsDir);
+        this.mavenHome = mavenHome;
+        this.jdkHome = jdkHome;
+        this.jdk8Home = jdk8Home;
     }
 
     @Override
