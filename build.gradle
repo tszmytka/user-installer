@@ -13,9 +13,7 @@ ext {
     picoCliVersion = '4.6.2'
     lombokVersion = '1.18.22'
     jacksonVersion = '2.13.0'
-    mainClassName = 'dev.tomek.userinstaller.intellij.idea.IdeaInstaller'
-    // for phpstorm
-//    mainClassName = 'dev.tomek.userinstaller.intellij.phpstorm.PhpStormInstaller'
+    mainClassName = 'dev.tomek.userinstaller.intellij.IntellijAppsInstaller'
 }
 
 repositories {
