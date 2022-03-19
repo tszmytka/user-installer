@@ -50,4 +50,4 @@ Deploy:
     - ssh-keyscan -H gitlab.com >> ~/.ssh/known_hosts
     - eval `ssh-agent -s` && echo "${CITAGGER_KEY}" | tr -d '\r' | ssh-add - > /dev/null
   script:
-    - './gradlew --build-cache publish final -Prelease.scope=minor'
+    - './gradlew --build-cache publish final -Prelease.scope=patch'
