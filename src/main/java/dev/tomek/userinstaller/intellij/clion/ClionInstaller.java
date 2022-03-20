@@ -34,7 +34,7 @@ public class ClionInstaller extends IntellijInstaller {
                 homeDir.resolve(Paths.get(CLION, "config", "settingsRepository", "repository", "external", "templates")), homeDir.resolve(Paths.get(CLION))
             ),
             new ResolveVars(homeDir.resolve(Paths.get(CLION, "config", "settingsRepository", "repository")), Map.of(
-                "$applicationConfig", homeDir.resolve(Paths.get("idea", "config")).toString()
+                "$applicationConfig", homeDir.resolve(Paths.get(CLION, "config")).toString()
             )),
             new InstallPlugins(homeDir.resolve(Paths.get(CLION)), List.of(
                 TOML,

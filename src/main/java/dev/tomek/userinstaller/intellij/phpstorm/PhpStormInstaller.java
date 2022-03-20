@@ -20,7 +20,7 @@ public class PhpStormInstaller extends IntellijInstaller {
     protected List<Action> buildCustomActions(Path homeDir, Path newInstallation) {
         return List.of(
             new ResolveVars(homeDir.resolve(Paths.get(PHPSTORM, "config", "settingsRepository", "repository")), Map.of(
-                "$applicationConfig", homeDir.resolve(Paths.get("idea", "config")).toString()
+                "$applicationConfig", homeDir.resolve(Paths.get(PHPSTORM, "config")).toString()
             ))
         );
     }
