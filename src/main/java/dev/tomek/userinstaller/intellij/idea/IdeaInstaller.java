@@ -15,12 +15,13 @@ import java.util.Map;
 @SuppressWarnings("unused")
 @Slf4j
 public class IdeaInstaller extends IntellijInstaller {
+    private static final String IDEA = "idea";
     private final String mavenHome;
     private final String jdkHome;
     private final String jdk8Home;
 
     public IdeaInstaller(String userHome, String settingsRepoUrl, String appsDir, String mavenHome, String jdkHome, String jdk8Home) {
-        super("idea", userHome, settingsRepoUrl, appsDir);
+        super(IDEA, userHome, settingsRepoUrl, appsDir);
         this.mavenHome = mavenHome;
         this.jdkHome = jdkHome;
         this.jdk8Home = jdk8Home;
@@ -30,9 +31,9 @@ public class IdeaInstaller extends IntellijInstaller {
     protected List<Action> buildCustomActions(Path homeDir, Path newInstallation) {
         return List.of(
             new CopyFiles(
-                homeDir.resolve(Paths.get("idea", "config", "settingsRepository", "repository", "external", "templates")), homeDir.resolve(Paths.get("idea"))
+                homeDir.resolve(Paths.get(IDEA, "config", "settingsRepository", "repository", "external", "templates")), homeDir.resolve(Paths.get(IDEA))
             ),
-            new ResolveVars(homeDir.resolve(Paths.get("idea", "config", "options")), Map.of(
+            new ResolveVars(homeDir.resolve(Paths.get(IDEA, "config", "options")), Map.of(
                 "$GRADLE_CACHES", homeDir.resolve(Paths.get(".gradle", "caches")).toString(),
                 "$KOTLIN_BUNDLED", newInstallation.resolve(Paths.get("plugins", "Kotlin", "kotlinc")).toString(),
                 "$MAVEN_REPOSITORY", homeDir.resolve(Paths.get(".m2", "repository")).toString(),
@@ -40,10 +41,10 @@ public class IdeaInstaller extends IntellijInstaller {
                 "$homePathJdk8", jdk8Home,
                 "$homePathJdk15", jdkHome
             )),
-            new ResolveVars(homeDir.resolve(Paths.get("idea", "config", "settingsRepository", "repository")), Map.of(
-                "$applicationConfig", homeDir.resolve(Paths.get("idea", "config")).toString()
+            new ResolveVars(homeDir.resolve(Paths.get(IDEA, "config", "settingsRepository", "repository")), Map.of(
+                "$applicationConfig", homeDir.resolve(Paths.get(IDEA, "config")).toString()
             )),
-            new InstallPlugins(homeDir.resolve(Paths.get("idea")), List.of(
+            new InstallPlugins(homeDir.resolve(Paths.get(IDEA)), List.of(
                 InstallPlugins.EXTRA_ICONS,
                 InstallPlugins.TEST_ME
             ))

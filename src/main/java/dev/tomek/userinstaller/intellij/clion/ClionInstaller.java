@@ -3,12 +3,14 @@ package dev.tomek.userinstaller.intellij.clion;
 import dev.tomek.userinstaller.action.Action;
 import dev.tomek.userinstaller.action.CopyFiles;
 import dev.tomek.userinstaller.action.InstallPlugins;
+import dev.tomek.userinstaller.action.ResolveVars;
 import dev.tomek.userinstaller.intellij.IntellijInstaller;
 import lombok.extern.slf4j.Slf4j;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 
 import static dev.tomek.userinstaller.action.InstallPlugins.*;
 
@@ -29,8 +31,11 @@ public class ClionInstaller extends IntellijInstaller {
     protected List<Action> buildCustomActions(Path homeDir, Path newInstallation) {
         return List.of(
             new CopyFiles(
-                homeDir.resolve(Paths.get("idea", "config", "settingsRepository", "repository", "external", "templates")), homeDir.resolve(Paths.get(CLION))
+                homeDir.resolve(Paths.get(CLION, "config", "settingsRepository", "repository", "external", "templates")), homeDir.resolve(Paths.get(CLION))
             ),
+            new ResolveVars(homeDir.resolve(Paths.get(CLION, "config", "settingsRepository", "repository")), Map.of(
+                "$applicationConfig", homeDir.resolve(Paths.get("idea", "config")).toString()
+            )),
             new InstallPlugins(homeDir.resolve(Paths.get(CLION)), List.of(
                 TOML,
                 RUST,
