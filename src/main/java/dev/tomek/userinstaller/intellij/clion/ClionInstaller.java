@@ -34,7 +34,8 @@ public class ClionInstaller extends IntellijInstaller {
             new InstallPlugins(homeDir.resolve(Paths.get(CLION)), List.of(
                 TOML,
                 RUST,
-                EXTRA_ICONS
+                EXTRA_ICONS,
+                EDITOR_CONFIG
             ))
         );
     }
