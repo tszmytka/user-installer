@@ -18,22 +18,20 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @RequiredArgsConstructor
 public class InstallPlugins implements Action {
-    private static final String API_BASE = "https://plugins.jetbrains.com/api/plugins/";
-    private static final String DOWNLOAD_BASE = "https://plugins.jetbrains.com/plugin/download?updateId=";
-    private static final ObjectMapper MAPPER = new ObjectMapper();
-
-    public static final Plugin EXTRA_ICONS = new Plugin(11058, "Extra Icons");
+    public static final Plugin EXTRA_ICONS = new Plugin(11058, "Extra Icons", 154299);
     public static final Plugin TEST_ME = new Plugin(9471, "TestMe");
     public static final Plugin TOML = new Plugin(8195, "Toml");
     public static final Plugin RUST = new Plugin(8182, "Rust");
-
+    public static final Plugin EDITOR_CONFIG = new Plugin(7294, "EditorConfig");
+    private static final String API_BASE = "https://plugins.jetbrains.com/api/plugins/";
+    private static final String DOWNLOAD_BASE = "https://plugins.jetbrains.com/plugin/download?updateId=";
+    private static final ObjectMapper MAPPER = new ObjectMapper();
     private final Path userHomeDir;
     private final List<Plugin> pluginsToInstall;
 
@@ -48,7 +46,7 @@ public class InstallPlugins implements Action {
             final Path systemPlugins = userHomeDir.resolve(Paths.get("system", "plugins"));
             Files.createDirectories(systemPlugins);
             final Path installTarget = userHomeDir.resolve(Paths.get("plugins"));
-            final List<ActionCommand> actionCommands = pluginsToInstall.stream().flatMap(p -> preInstall(p, systemPlugins, installTarget)).collect(toList());
+            final List<ActionCommand> actionCommands = pluginsToInstall.stream().flatMap(p -> preInstall(p, systemPlugins, installTarget)).toList();
             if (actionCommands.size() > 0) {
                 final Path actionScript = systemPlugins.resolve("action.script");
                 try (ObjectOutput oos = new ObjectOutputStream(Files.newOutputStream(actionScript))) {
@@ -72,8 +70,7 @@ public class InstallPlugins implements Action {
             if (updates.length <= 0) {
                 LOGGER.error("No updates for plugin {}", plugin.id);
             } else {
-                final Update newest = updates[0];
-                final URL pluginUrl = new URL(DOWNLOAD_BASE + newest.id);
+                final URL pluginUrl = new URL(DOWNLOAD_BASE + Optional.ofNullable(plugin.releaseId).orElse(updates[0].id));
                 final Path target = systemPlugins.resolve(plugin.name + ".zip");
                 Files.copy(pluginUrl.openStream(), target, StandardCopyOption.REPLACE_EXISTING);
                 return Stream.of(
@@ -91,10 +88,12 @@ public class InstallPlugins implements Action {
         return new URL(API_BASE + "%s/updates".formatted(pluginId));
     }
 
-    public record Plugin(int id, String name) {
+    public record Plugin(int id, String name, Integer releaseId) {
+        public Plugin(int id, String name) {
+            this(id, name, null);
+        }
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    private record Update(int id, String version, String file) {
-    }
+    private record Update(int id, String version, String file) {}
 }
