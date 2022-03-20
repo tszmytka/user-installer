@@ -40,6 +40,9 @@ public class IdeaInstaller extends IntellijInstaller {
                 "$homePathJdk8", jdk8Home,
                 "$homePathJdk15", jdkHome
             )),
+            new ResolveVars(homeDir.resolve(Paths.get("idea", "config", "settingsRepository", "repository")), Map.of(
+                "$applicationConfig", homeDir.resolve(Paths.get("idea", "config")).toString()
+            )),
             new InstallPlugins(homeDir.resolve(Paths.get("idea")), List.of(
                 InstallPlugins.EXTRA_ICONS,
                 InstallPlugins.TEST_ME
