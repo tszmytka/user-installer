@@ -10,6 +10,8 @@ import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 @Slf4j
 @RequiredArgsConstructor
 public class InstallSettingsRepo implements Action {
@@ -38,7 +40,12 @@ public class InstallSettingsRepo implements Action {
             }
             process = Runtime.getRuntime().exec("git clone %s %s".formatted(repoUrl, destination));
             if (process.waitFor(1, TimeUnit.MINUTES)) {
-                return Result.OK;
+                final int exit = process.exitValue();
+                if (exit == 0) {
+                    return Result.OK;
+                } else {
+                    LOGGER.warn("Git clone failed with exit value: {} and error: {}", exit, new String(process.getErrorStream().readAllBytes(), UTF_8));
+                }
             }
         } catch (IOException | InterruptedException e) {
             LOGGER.error("Cannot install settings repository into {}", destination, e);
