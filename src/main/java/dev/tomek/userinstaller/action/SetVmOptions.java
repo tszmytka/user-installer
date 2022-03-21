@@ -14,7 +14,6 @@ import java.util.List;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -24,18 +23,6 @@ public class SetVmOptions implements Action {
 
     private final Path optionsFile;
 
-    @RequiredArgsConstructor
-    private enum Opt {
-        USER_HOME("-Duser.home", ""),
-        CONFIG_PATH("-Didea.config.path", "config"),
-        SYSTEM_PATH("-Didea.system.path", "system"),
-        PLUGINS_PATH("-Didea.plugins.path", "plugins"),
-        LOG_PATH("-Didea.log.path", "log");
-
-        private final String optId;
-        private final String dirSuffix;
-    }
-
     @Override
     public String getName() {
         return "Setting startup vm options";
@@ -44,8 +31,8 @@ public class SetVmOptions implements Action {
     @Override
     public Result perform() {
         try {
-            final List<String> optIds = Arrays.stream(Opt.values()).map(opt -> opt.optId).collect(toList());
-            final List<String> configAlreadyContaining = Files.lines(optionsFile, UTF_8).filter(l -> optIds.stream().anyMatch(l::contains)).collect(toList());
+            final List<String> optIds = Arrays.stream(Opt.values()).map(opt -> opt.optId).toList();
+            final List<String> configAlreadyContaining = Files.lines(optionsFile, UTF_8).filter(l -> optIds.stream().anyMatch(l::contains)).toList();
             if (!configAlreadyContaining.isEmpty()) {
                 if (configAlreadyContaining.size() == optIds.size()) {
                     LOGGER.info("All options are already in the target file");
@@ -67,5 +54,17 @@ public class SetVmOptions implements Action {
             LOGGER.error("Cannot set options", e);
         }
         return Result.ERROR;
+    }
+
+    @RequiredArgsConstructor
+    private enum Opt {
+        USER_HOME("-Duser.home", ""),
+        CONFIG_PATH("-Didea.config.path", "config"),
+        SYSTEM_PATH("-Didea.system.path", "system"),
+        PLUGINS_PATH("-Didea.plugins.path", "plugins"),
+        LOG_PATH("-Didea.log.path", "log");
+
+        private final String optId;
+        private final String dirSuffix;
     }
 }
