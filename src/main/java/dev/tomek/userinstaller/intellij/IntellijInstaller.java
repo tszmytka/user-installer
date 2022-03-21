@@ -38,7 +38,9 @@ public abstract class IntellijInstaller implements Runnable {
 
         final Optional<Path> foundInstallation = findNewInstallDir();
         if (foundInstallation.isEmpty()) {
-            throw new IllegalStateException("Could not find new installation dir");
+            LOGGER.warn("No new installation dir found for {}", applicationName);
+            System.out.printf("%s - no new installation dir found. Skipping%n", applicationName);
+            return;
         }
         final Path newInstallation = foundInstallation.get();
         System.out.println("New installation: " + newInstallation);
@@ -57,7 +59,7 @@ public abstract class IntellijInstaller implements Runnable {
                 AnsiConsole.printResult(a.perform());
             });
         } else {
-            System.out.println("Installation interrupted.");
+            System.out.println("Installation skipped.");
         }
         System.out.println();
     }
