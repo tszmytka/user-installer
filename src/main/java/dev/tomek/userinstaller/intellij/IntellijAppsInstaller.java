@@ -3,7 +3,6 @@ package dev.tomek.userinstaller.intellij;
 import dev.tomek.userinstaller.AnsiConsole;
 import dev.tomek.userinstaller.action.Action;
 import dev.tomek.userinstaller.action.DeleteDir;
-import dev.tomek.userinstaller.action.DeleteRegKey;
 import dev.tomek.userinstaller.intellij.clion.ClionInstaller;
 import dev.tomek.userinstaller.intellij.idea.IdeaInstaller;
 import dev.tomek.userinstaller.intellij.phpstorm.PhpStormInstaller;
@@ -79,8 +78,7 @@ public class IntellijAppsInstaller implements Runnable {
 
             final List<Action> actions = List.of(
                 new DeleteDir(jb1),
-                new DeleteDir(jb2),
-                new DeleteRegKey("HKCU\\Software\\JavaSoft\\Prefs\\jetbrains")
+                new DeleteDir(jb2)
             );
             actions.forEach(a -> {
                 System.out.print(a.getName() + " ... ");
