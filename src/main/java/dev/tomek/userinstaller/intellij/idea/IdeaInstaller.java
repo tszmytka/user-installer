@@ -46,7 +46,8 @@ public class IdeaInstaller extends IntellijInstaller {
             )),
             new InstallPlugins(homeDir.resolve(Paths.get(IDEA)), List.of(
                 InstallPlugins.EXTRA_ICONS,
-                InstallPlugins.TEST_ME
+                InstallPlugins.TEST_ME,
+                InstallPlugins.SETTINGS_REPOSITORY
             ))
         );
     }

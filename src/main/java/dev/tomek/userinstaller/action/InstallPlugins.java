@@ -29,6 +29,7 @@ public class InstallPlugins implements Action {
     public static final Plugin TOML = new Plugin(8195, "Toml");
     public static final Plugin RUST = new Plugin(8182, "Rust");
     public static final Plugin EDITOR_CONFIG = new Plugin(7294, "EditorConfig");
+    public static final Plugin SETTINGS_REPOSITORY = new Plugin(7294, "Settings Repository");
     private static final String API_BASE = "https://plugins.jetbrains.com/api/plugins/";
     private static final String DOWNLOAD_BASE = "https://plugins.jetbrains.com/plugin/download?updateId=";
     private static final ObjectMapper MAPPER = new ObjectMapper();
