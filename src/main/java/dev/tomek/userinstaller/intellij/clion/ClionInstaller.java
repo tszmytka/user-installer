@@ -40,7 +40,8 @@ public class ClionInstaller extends IntellijInstaller {
                 TOML,
                 RUST,
                 EXTRA_ICONS,
-                EDITOR_CONFIG
+                EDITOR_CONFIG,
+                SETTINGS_REPOSITORY
             ))
         );
     }
