@@ -8,8 +8,11 @@ plugins {
 
 group = 'dev.tomek'
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_20
+}
+
 ext {
-    sourceCompatibility = 17
     picoCliVersion = '4.7.1'
     lombokVersion = '1.18.26'
     jacksonVersion = '2.14.2'
