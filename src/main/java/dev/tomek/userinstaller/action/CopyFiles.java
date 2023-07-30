@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Stream;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -23,8 +24,8 @@ public class CopyFiles implements Action {
 
     @Override
     public Result perform() {
-        try {
-            if (Files.walk(from).map(file -> Map.entry(file, to.resolve(from.relativize(file)))).filter(pair -> !copyAll(pair)).findAny().isEmpty()) {
+        try (Stream<Path> files = Files.walk(from)) {
+            if (files.map(file -> Map.entry(file, to.resolve(from.relativize(file)))).filter(pair -> !copyAll(pair)).findAny().isEmpty()) {
                 return Result.OK;
             }
         } catch (IOException e) {

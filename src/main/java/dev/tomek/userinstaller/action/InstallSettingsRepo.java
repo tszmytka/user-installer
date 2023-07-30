@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -34,11 +35,13 @@ public class InstallSettingsRepo implements Action {
                 LOGGER.error("Destination is not a directory");
                 return Result.ERROR;
             }
-            if (Files.walk(destination).anyMatch(path -> path != destination)) {
-                LOGGER.info("Skipping installing settings repository. Destination directory is not empty.");
-                return Result.SKIPPED;
+            try (Stream<Path> files = Files.walk(destination)) {
+                if (files.anyMatch(path -> path != destination)) {
+                    LOGGER.info("Skipping installing settings repository. Destination directory is not empty.");
+                    return Result.SKIPPED;
+                }
             }
-            process = Runtime.getRuntime().exec("git clone %s %s".formatted(repoUrl, destination));
+            process = Runtime.getRuntime().exec(new String[]{"git", "clone", repoUrl, destination.toString()});
             if (process.waitFor(1, TimeUnit.MINUTES)) {
                 final int exit = process.exitValue();
                 if (exit == 0) {
