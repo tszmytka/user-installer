@@ -22,7 +22,7 @@ public class DeleteRegKey implements Action {
     public Result perform() {
         Process process = null;
         try {
-            process = Runtime.getRuntime().exec("reg delete %s /f".formatted(key));
+            process = Runtime.getRuntime().exec(new String[]{"reg", "delete", key, "/f"});
             final boolean result = process.waitFor(1, TimeUnit.SECONDS);
             LOGGER.debug("Registry key {} deletion result: {}", key, result);
             if (result) {

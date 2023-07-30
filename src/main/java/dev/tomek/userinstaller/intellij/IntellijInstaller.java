@@ -65,9 +65,8 @@ public abstract class IntellijInstaller implements Runnable {
     }
 
     private Optional<Path> findNewInstallDir() {
-        try {
-            return Files.find(Paths.get(appsDir), 1, (p, a) -> a.isDirectory() && p.getFileName().toString().toLowerCase(Locale.ROOT).startsWith(applicationName))
-                .map(p -> {
+        try (Stream<Path> paths = Files.find(Paths.get(appsDir), 1, (p, a) -> a.isDirectory() && p.getFileName().toString().toLowerCase(Locale.ROOT).startsWith(applicationName))) {
+            return paths.map(p -> {
                     FileTime fileTime;
                     try {
                         fileTime = Files.readAttributes(p, BasicFileAttributes.class).lastModifiedTime();

@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -47,11 +48,14 @@ public class InstallPlugins implements Action {
             final Path systemPlugins = userHomeDir.resolve(Paths.get("system", "plugins"));
             Files.createDirectories(systemPlugins);
             final Path installTarget = userHomeDir.resolve(Paths.get("plugins"));
+            final String task = "installing plugins: %s".formatted(pluginsToInstall.stream().map(Plugin::name).toList());
+            LOGGER.info("Begin {}", task);
             final List<ActionCommand> actionCommands = pluginsToInstall.stream().flatMap(p -> preInstall(p, systemPlugins, installTarget)).toList();
-            if (actionCommands.size() > 0) {
+            if (!actionCommands.isEmpty()) {
                 final Path actionScript = systemPlugins.resolve("action.script");
                 try (ObjectOutput oos = new ObjectOutputStream(Files.newOutputStream(actionScript))) {
                     oos.writeObject(actionCommands.toArray(new ActionCommand[]{}));
+                    LOGGER.info("Finished {}", task);
                 } catch (Exception e) {
                     Files.deleteIfExists(actionScript);
                     LOGGER.error("Could not build action script file", e);
@@ -71,7 +75,7 @@ public class InstallPlugins implements Action {
             if (updates.length <= 0) {
                 LOGGER.error("No updates for plugin {}", plugin.id);
             } else {
-                final URL pluginUrl = new URL(DOWNLOAD_BASE + Optional.ofNullable(plugin.releaseId).orElse(updates[0].id));
+                final URL pluginUrl = URI.create(DOWNLOAD_BASE + Optional.ofNullable(plugin.releaseId).orElse(updates[0].id)).toURL();
                 final Path target = systemPlugins.resolve(plugin.name + ".zip");
                 Files.copy(pluginUrl.openStream(), target, StandardCopyOption.REPLACE_EXISTING);
                 return Stream.of(
@@ -86,7 +90,7 @@ public class InstallPlugins implements Action {
     }
 
     private URL buildUrlUpdates(int pluginId) throws MalformedURLException {
-        return new URL(API_BASE + "%s/updates".formatted(pluginId));
+        return URI.create(API_BASE + "%s/updates".formatted(pluginId)).toURL();
     }
 
     public record Plugin(int id, String name, Integer releaseId) {
