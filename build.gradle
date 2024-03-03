@@ -14,7 +14,7 @@ java {
 
 ext {
     picoCliVersion = '4.7.4'
-    lombokVersion = '1.18.28'
+    lombokVersion = '1.18.30'
     jacksonVersion = '2.15.2'
     mainClassName = 'dev.tomek.userinstaller.intellij.IntellijAppsInstaller'
 }
