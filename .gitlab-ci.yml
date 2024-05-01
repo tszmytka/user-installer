@@ -1,4 +1,4 @@
-image: eclipse-temurin:20.0.2_9-jdk-alpine
+image: eclipse-temurin:21-jdk-alpine
 
 variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
