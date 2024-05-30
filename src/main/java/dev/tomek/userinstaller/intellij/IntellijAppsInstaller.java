@@ -6,6 +6,7 @@ import dev.tomek.userinstaller.action.DeleteDir;
 import dev.tomek.userinstaller.intellij.clion.ClionInstaller;
 import dev.tomek.userinstaller.intellij.idea.IdeaInstaller;
 import dev.tomek.userinstaller.intellij.phpstorm.PhpStormInstaller;
+import dev.tomek.userinstaller.intellij.rustrover.RustRoverInstaller;
 import dev.tomek.userinstaller.metadata.ManifestReader;
 import lombok.extern.slf4j.Slf4j;
 import picocli.CommandLine;
@@ -25,32 +26,24 @@ import static org.fusesource.jansi.AnsiConsole.systemUninstall;
 public class IntellijAppsInstaller implements Runnable {
     @Option(names = {"-d", "--home-dir"}, description = "User home directory - where application config dir will be located.", required = true)
     private String userHome;
-
     @Option(names = {"-u", "--user"}, description = "User name. Used to locate additional settings needing cleaning up.", required = true)
     private String userName;
-
     @Option(names = {"-a", "--apps-dir"}, description = "Applications directory. Where the old and new Intellij installs reside.", required = true)
     private String appsDir;
-
-
     @Option(names = {"-si", "--settings-idea"}, description = "Url to Idea settings repository. This will be cloned and installed.", required = true)
     private String settingsIdea;
-
     @Option(names = {"-m", "--maven-home"}, description = "Maven home directory.", required = true)
     private String mavenHome;
-
     @Option(names = {"-j", "--jdk-home"}, description = "Main JDK home directory.", required = true)
     private String jdkHome;
-
     @Option(names = {"-j8", "--jdk8-home"}, description = "JDK 8 home directory.", required = true)
     private String jdk8Home;
-
     @Option(names = {"-sp", "--settings-phpstorm"}, description = "Url to Php Storm settings repository. This will be cloned and installed.", required = true)
     private String settingsPhpStorm;
-
     @Option(names = {"-sc", "--settings-clion"}, description = "Url to Clion settings repository. This will be cloned and installed.", required = true)
     private String settingsClion;
-
+    @Option(names = {"-sr", "--settings-rust-rover"}, description = "Url to Rust Rover settings repository. This will be cloned and installed.", required = true)
+    private String settingsRustRover;
 
     public static void main(String[] args) {
         systemInstall();
@@ -68,7 +61,8 @@ public class IntellijAppsInstaller implements Runnable {
         final List<IntellijInstaller> installers = List.of(
             new IdeaInstaller(userHome, settingsIdea, appsDir, mavenHome, jdkHome, jdk8Home),
             new PhpStormInstaller(userHome, settingsPhpStorm, appsDir),
-            new ClionInstaller(userHome, settingsClion, appsDir)
+            new ClionInstaller(userHome, settingsClion, appsDir),
+            new RustRoverInstaller(userHome, settingsClion, appsDir)
         );
         installers.forEach(IntellijInstaller::run);
 
