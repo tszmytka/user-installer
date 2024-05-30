@@ -62,7 +62,7 @@ public class IntellijAppsInstaller implements Runnable {
             new IdeaInstaller(userHome, settingsIdea, appsDir, mavenHome, jdkHome, jdk8Home),
             new PhpStormInstaller(userHome, settingsPhpStorm, appsDir),
             new ClionInstaller(userHome, settingsClion, appsDir),
-            new RustRoverInstaller(userHome, settingsClion, appsDir)
+            new RustRoverInstaller(userHome, settingsRustRover, appsDir)
         );
         installers.forEach(IntellijInstaller::run);
 
