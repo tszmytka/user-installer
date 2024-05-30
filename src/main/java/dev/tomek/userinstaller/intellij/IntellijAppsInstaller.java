@@ -16,6 +16,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.fusesource.jansi.AnsiConsole.systemInstall;
 import static org.fusesource.jansi.AnsiConsole.systemUninstall;
@@ -38,11 +40,11 @@ public class IntellijAppsInstaller implements Runnable {
     private String jdkHome;
     @Option(names = {"-j8", "--jdk8-home"}, description = "JDK 8 home directory.", required = true)
     private String jdk8Home;
-    @Option(names = {"-sp", "--settings-phpstorm"}, description = "Url to Php Storm settings repository. This will be cloned and installed.", required = true)
+    @Option(names = {"-sp", "--settings-phpstorm"}, description = "Url to Php Storm settings repository. This will be cloned and installed.")
     private String settingsPhpStorm;
-    @Option(names = {"-sc", "--settings-clion"}, description = "Url to Clion settings repository. This will be cloned and installed.", required = true)
+    @Option(names = {"-sc", "--settings-clion"}, description = "Url to Clion settings repository. This will be cloned and installed.")
     private String settingsClion;
-    @Option(names = {"-sr", "--settings-rust-rover"}, description = "Url to Rust Rover settings repository. This will be cloned and installed.", required = true)
+    @Option(names = {"-sr", "--settings-rust-rover"}, description = "Url to Rust Rover settings repository. This will be cloned and installed.")
     private String settingsRustRover;
 
     public static void main(String[] args) {
@@ -57,14 +59,13 @@ public class IntellijAppsInstaller implements Runnable {
         final String job = "installing applications";
         LOGGER.info("Start " + job);
         final long t0 = System.nanoTime();
-
-        final List<IntellijInstaller> installers = List.of(
-            new IdeaInstaller(userHome, settingsIdea, appsDir, mavenHome, jdkHome, jdk8Home),
-            new PhpStormInstaller(userHome, settingsPhpStorm, appsDir),
-            new ClionInstaller(userHome, settingsClion, appsDir),
-            new RustRoverInstaller(userHome, settingsRustRover, appsDir)
-        );
-        installers.forEach(IntellijInstaller::run);
+        
+        Stream.of(
+            Optional.of(new IdeaInstaller(userHome, settingsIdea, appsDir, mavenHome, jdkHome, jdk8Home)),
+            Optional.ofNullable(settingsPhpStorm).map(s -> new PhpStormInstaller(userHome, s, appsDir)),
+            Optional.ofNullable(settingsClion).map(s -> new ClionInstaller(userHome, s, appsDir)),
+            Optional.ofNullable(settingsRustRover).map(s -> new RustRoverInstaller(userHome, s, appsDir))
+        ).flatMap(Optional::stream).forEach(IntellijInstaller::run);
 
         if (AnsiConsole.should("Remove global settings (affects all installations)?")) {
             final Path jb1 = Paths.get("C:", "users", userName, "AppData", "Roaming", "JetBrains");
